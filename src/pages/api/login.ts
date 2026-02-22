@@ -32,6 +32,14 @@ export async function handleLogin(
 
   const { username, password } = body as { username: string; password: string };
 
+  const USERNAME_MAX = 64;
+  if (username.length === 0 || username.length > USERNAME_MAX) {
+    return new Response(
+      JSON.stringify({ error: "username and password are required" }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
   const user = await getUser(kv, username);
   if (!user) {
     return new Response(

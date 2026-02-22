@@ -38,6 +38,8 @@ describe("POST /api/login", () => {
 
     const response = await handleLogin(request, env.SESSION);
     expect(response.status).toBe(401);
+    const json = await response.json() as { error: string };
+    expect(json.error).toBe("ユーザー名またはパスワードが違います");
   });
 
   it("存在しないユーザーで401を返す", async () => {
@@ -49,6 +51,8 @@ describe("POST /api/login", () => {
 
     const response = await handleLogin(request, env.SESSION);
     expect(response.status).toBe(401);
+    const json = await response.json() as { error: string };
+    expect(json.error).toBe("ユーザー名またはパスワードが違います");
   });
 
   it("username/passwordが欠けていると400を返す", async () => {
@@ -60,5 +64,18 @@ describe("POST /api/login", () => {
 
     const response = await handleLogin(request, env.SESSION);
     expect(response.status).toBe(400);
+  });
+
+  it("不正なJSONで400を返す", async () => {
+    const request = new Request("http://localhost/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "not-json",
+    });
+
+    const response = await handleLogin(request, env.SESSION);
+    expect(response.status).toBe(400);
+    const json = await response.json() as { error: string };
+    expect(json.error).toBe("Invalid JSON");
   });
 });
