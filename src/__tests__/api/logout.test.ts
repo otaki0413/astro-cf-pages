@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:test";
 import { saveSession, getSession } from "../../lib/kv";
-import { handleLogout } from "./logout";
+import { handleLogout } from "../../pages/api/logout";
 
 describe("POST /api/logout", () => {
   it("セッショントークンのCookieを削除する", async () => {

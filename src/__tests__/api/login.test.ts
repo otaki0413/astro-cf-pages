@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { env } from "cloudflare:test";
 import { saveUser } from "../../lib/kv";
 import { hashPassword } from "../../lib/auth";
-import { handleLogin } from "./login";
+import { handleLogin } from "../../pages/api/login";
 
 describe("POST /api/login", () => {
   beforeEach(async () => {
