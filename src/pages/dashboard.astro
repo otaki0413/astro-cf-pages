@@ -1,0 +1,32 @@
+---
+export const prerender = false;
+
+if (!Astro.locals.user) {
+  return Astro.redirect("/login");
+}
+
+const { username } = Astro.locals.user;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>ダッシュボード</title>
+  </head>
+  <body>
+    <h1>ダッシュボード</h1>
+    <p>ようこそ、{username} さん</p>
+    <form id="logout-form">
+      <button type="submit">ログアウト</button>
+    </form>
+    <script>
+      document.getElementById("logout-form")?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await fetch("/api/logout", { method: "POST" });
+        window.location.href = "/login";
+      });
+    </script>
+  </body>
+</html>
