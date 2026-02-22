@@ -11,7 +11,12 @@ export async function verifyPassword(
   hash: string
 ): Promise<boolean> {
   const inputHash = await hashPassword(password);
-  return inputHash === hash;
+  if (inputHash.length !== hash.length) return false;
+  let diff = 0;
+  for (let i = 0; i < inputHash.length; i++) {
+    diff |= inputHash.charCodeAt(i) ^ hash.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 export function generateToken(): string {
