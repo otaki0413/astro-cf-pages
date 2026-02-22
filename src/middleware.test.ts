@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:test";
-import { saveSession } from "./lib/kv";
+import { saveSession, getSession } from "./lib/kv";
 import { resolveSession } from "./middleware";
 
 describe("resolveSession", () => {
@@ -27,7 +27,7 @@ describe("resolveSession", () => {
     expect(user).toBeNull();
   });
 
-  it("期限切れセッションはnullを返す", async () => {
+  it("期限切れセッションはnullを返しKVから削除される", async () => {
     const token = "expired-token";
     // KV TTL は最小60秒が必要。expiresAt を過去にすることで期限切れを表現する
     await saveSession(
@@ -39,5 +39,9 @@ describe("resolveSession", () => {
 
     const user = await resolveSession(env.SESSION, token);
     expect(user).toBeNull();
+
+    // KV から削除されたことを確認
+    const remaining = await getSession(env.SESSION, token);
+    expect(remaining).toBeNull();
   });
 });
