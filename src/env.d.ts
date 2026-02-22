@@ -5,3 +5,7 @@ declare namespace App {
 		user: { username: string } | null;
 	}
 }
+
+declare module "cloudflare:test" {
+	interface ProvidedEnv extends Env {}
+}

@@ -76,5 +76,5 @@ export async function handleLogin(
 export const prerender = false;
 
 export const POST: APIRoute = async (context) => {
-  return handleLogin(context.request, context.env.SESSION);
+  return handleLogin(context.request, context.locals.runtime.env.SESSION);
 };
