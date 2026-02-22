@@ -8,4 +8,12 @@ export default defineWorkersConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      "astro:middleware": new URL(
+        "./src/__mocks__/astro-middleware.ts",
+        import.meta.url
+      ).pathname,
+    },
+  },
 });
